@@ -42,7 +42,7 @@ class Block {
             self.hash = null;
             let calculatedHash = SHA256(JSON.stringify(self)).toString();
             self.hash = currentHash;
-            calculatedHash === currentHash ? resolve(true) : resolve(false);
+            resolve(calculatedHash === currentHash);
         });
     }
 
