@@ -117,7 +117,13 @@ class Blockchain {
             if (currentTime < (time + (minuteTolerance * 60 * 1000))) {
                 if (bitcoinMessage.verify(message, address, signature)) {
                     let block = await self._addBlock(new BlockClass.Block({star: star,owner: address}));
-                    resolve(block)
+                    let validationErrors = await self.validateChain();
+                    console.log(validationErrors);
+                    if (block && validationErrors.length === 0) {
+                        resolve(block)
+                    } else {
+                        reject(`Tried to add Invalid Block to the Chain: ${validationErrors}`);
+                    }
                 } else {
                     reject(`Failed to bitcoin Verify address ${address}`);
                 }
